@@ -30,3 +30,13 @@ cannon.draw = function () {
 	Canvas2D.drawImage(sprites.cannonBarrel, cannon.position, cannon.rotation, cannon.origin);
 	Canvas2D.drawImage(cannon.currentColor, cannon.colorPosition, 0, {x:16,y:15});
 }
+
+cannon.update = function () {
+	
+}
+
+cannon.ballPosition = function () {
+	var opposite = Math.sin(cannon.rotation) * sprites.cannonBarrel.width * 0.6;
+    var adjacent = Math.cos(cannon.rotation) * sprites.cannonBarrel.width * 0.6;
+    return { x: cannon.position.x + adjacent, y: cannon.position.y + opposite}
+}

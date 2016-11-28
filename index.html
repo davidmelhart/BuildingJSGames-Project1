@@ -9,11 +9,16 @@
         $LAB
                 .script('input/Keyboard.js').wait()
                 .script('input/Mouse.js').wait()
-                .script('Canvas2D.js').wait()
+                .script('system/Canvas2D.js').wait()
 
-                .script('app.js').wait()
-                .script('Cannon.js').wait(function () {
-                    Game.startup("gameCanvas");
+				.script('system/Game.js').wait()
+				.script('app.js').wait()
+
+                .script('elements/Cannon.js').wait()
+                .script('elements/Ball.js').wait()
+
+                .script('GameWorld.js').wait(function () {
+                    Game.startup("gameCanvas", gameCanvas.width, gameCanvas.height);
                 });
 
     </script>
