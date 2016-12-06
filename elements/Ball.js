@@ -1,10 +1,6 @@
 "use strict";
 
-var ball = {
-
-};
-
-ball.init = function () {
+function Ball () {
 	this.position = { x:0, y:0 };
 	this.origin = { x:0, y:0 };
 	this.velocity = { x:0, y:0 };
@@ -13,46 +9,46 @@ ball.init = function () {
 	this.speedMultiplier = 1.2;
 }
 
-ball.reset = function () {
+Ball.prototype.reset = function () {
 	this.position = { x:0, y:0 };
 	this.isShot	= false;
-}
+};
 
-ball.handleInput = function () {
-	if (Mouse.leftPressed && !ball.isShot) {
-		ball.isShot = true;
-        this.velocity.x = (Mouse.position.x - this.position.x) * ball.speedMultiplier;
-        this.velocity.y = (Mouse.position.y - this.position.y) * ball.speedMultiplier;
+Ball.prototype.handleInput = function () {
+	if (Mouse.leftPressed && !this.isShot) {
+		this.isShot = true;
+        this.velocity.x = (Mouse.position.x - this.position.x) * this.speedMultiplier;
+        this.velocity.y = (Mouse.position.y - this.position.y) * this.speedMultiplier;
 	}
-}
+};
 
-ball.draw = function () {
-	if (!ball.isShot) {
+Ball.prototype.draw = function () {
+	if (!this.isShot) {
 		return;
 	}
-	Canvas2D.drawImage(ball.currentColor, ball.position, ball.rotation, ball.origin);
-}
+	Canvas2D.drawImage(this.currentColor, this.position, this.rotation, this.origin);
+};
 
-ball.update = function (delta) {
-	if (ball.isShot) {
-		ball.velocity.x = ball.velocity.x * 0.99;
-		ball.velocity.y = ball.velocity.y + 6;
-		ball.position.x = ball.position.x + ball.velocity.x * delta;
-		ball.position.y = ball.position.y + ball.velocity.y * delta;
+Ball.prototype.update = function (delta) {
+	if (this.isShot) {
+		this.velocity.x = this.velocity.x * 0.99;
+		this.velocity.y = this.velocity.y + 6;
+		this.position.x = this.position.x + this.velocity.x * delta;
+		this.position.y = this.position.y + this.velocity.y * delta;
 	} else {
-		if (cannon.currentColor === sprites.cannonRed) {
-			ball.currentColor = sprites.ballRed;
-		} else if (cannon.currentColor === sprites.cannonGreen) {
-			ball.currentColor = sprites.ballGreen;
+		if (Game.gameWorld.cannon.currentColor === sprites.cannonRed) {
+			this.currentColor = sprites.ballRed;
+		} else if (Game.gameWorld.cannon.currentColor === sprites.cannonGreen) {
+			this.currentColor = sprites.ballGreen;
 		} else {
-			ball.currentColor = sprites.ballBlue;
+			this.currentColor = sprites.ballBlue;
 		}
-		ball.position = cannon.ballPosition();
-		ball.position.x = ball.position.x - ball.currentColor.width / 2;
-		ball.position.y = ball.position.y - ball.currentColor.height / 2;
+		this.position = Game.gameWorld.cannon.ballPosition();
+		this.position.x = this.position.x - this.currentColor.width / 2;
+		this.position.y = this.position.y - this.currentColor.height / 2;
 	}
 
-	if (painterGameWorld.isOutsideWorld(ball.position)) {
-		ball.reset();
+	if (Game.gameWorld.isOutsideWorld(this.position)) {
+		this.reset();
 	}
-}
+};

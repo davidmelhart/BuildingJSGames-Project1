@@ -15,10 +15,9 @@ Game.assetLoader = function () {
     sprites.ballRed = loadSprite("spr_ball_red.png");
     sprites.ballGreen = loadSprite("spr_ball_green.png");
     sprites.ballBlue = loadSprite("spr_ball_blue.png");
-};	
-
-Game.init = function () {
-	cannon.init();
-	ball.init();
-	Game.gameWorld = painterGameWorld;
-}
+    sprites.canRed = loadSprite("spr_can_red.png");
+    sprites.canGreen = loadSprite("spr_can_green.png");
+    sprites.canBlue = loadSprite("spr_can_blue.png");
+    sprites.life = loadSprite("spr_lives.png");
+    sprites.gameover = loadSprite("spr_gameover_click.png");
+};

@@ -9,56 +9,48 @@ window.requestAnimationFrame =  window.requestAnimationFrame ||
                                     window.setTimeout(callback, 1000 / 60);
                                 };
 
-var Game = {
-	spritesLoading: 0,
-	gameWorld: undefined
+function Game_Singleton () {
+	this.size = undefined;
+	this.gameWorld = undefined;
+	this.spritesLoading = 0;
+}
+
+Game_Singleton.prototype.startup = function (canvas, x, y) {
+	Canvas2D.init(canvas);
+	this.size = { x : x, y : y };
+	this.assetLoader();
+	this.loadingLoop();
+	//window.requestAnimationFrame(this.loadingLoop);
 };
 
-Game.startup = function (canvas, x, y) {
-	Canvas2D.init(canvas);
-	Game.size = { x : x, y : y };
-	Mouse.init();
-	Keyboard.init();
-	Game.assetLoader();
-	window.requestAnimationFrame(Game.loadingLoop);
-}
+Game_Singleton.prototype.init = function () {
+	this.gameWorld = new PainterGameWorld();
+};
 
-Game.loadingLoop = function () {
-	if (Game.spritesLoading > 0) {
-		window.requestAnimationFrame(Game.loadingLoop);
-	} else {
-		Game.init();
-		Game.mainLoop();
-	}
-}
+Game_Singleton.prototype.assetLoader = function () {
 
-Game.loadSprite = function(imageName) {
+};
+
+Game_Singleton.prototype.loadSprite = function(imageName) {
 	var image = new Image();
 	image.src = imageName;
-	Game.spritesLoading += 1;
+	this.spritesLoading += 1;
 	image.onload = function () {
 		Game.spritesLoading -=1;
 	}
 	return image;
-}
+};
 
-Game.assetLoader = function () {
+Game_Singleton.prototype.loadingLoop = function () {
+	if (!this.spritesLoading > 0)
+        requestAnimationFrame(Game.loadingLoop);
+    else {
+        Game.init();
+        requestAnimationFrame(Game.mainLoop);
+    }
+};
 
-}
-
-Game.init = function () {
-
-}
-
-Game.update = function () {
-	
-}
-
-Game.draw = function () {
-
-}
-
-Game.mainLoop = function () {
+Game_Singleton.prototype.mainLoop = function () {
 	var delta = 1 / 60;
 
     Game.gameWorld.handleInput(delta);
@@ -67,4 +59,6 @@ Game.mainLoop = function () {
     Game.gameWorld.draw();
     Mouse.reset();
     requestAnimationFrame(Game.mainLoop);
-}
+};
+
+var Game = new Game_Singleton();

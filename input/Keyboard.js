@@ -8,14 +8,18 @@ var Keys = {
     Y: 89,     Z: 90
 }
 
-var Keyboard = {
-	keyDown: -1
-};
-
-Keyboard.handleKeyDown = function (event) {
-	Keyboard.keyDown = event.keyCode;
+function handleKeyDown(evt) {
+    Keyboard.keyDown = evt.keyCode;
 }
 
-Keyboard.init = function () {
-	document.onkeydown = Keyboard.handleKeyDown;
+function handleKeyUp(evt) {
+    Keyboard.keyDown = -1;
 }
+
+function Keyboard_Singleton() {
+    this.keyDown = -1;
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
+}
+
+var Keyboard = new Keyboard_Singleton();

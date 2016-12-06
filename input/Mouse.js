@@ -1,36 +1,33 @@
 "use strict"
 
-var Mouse = {
-	position: {x: 816, y: 10},
-	leftDown: false,
-	leftPressed: false
+function handleMouseMove(evt) {
+    Mouse.position = { x : evt.pageX, y : evt.pageY };
+}
+
+function handleMouseDown(evt) {
+    if (evt.which === 1) {
+        if (!Mouse.leftDown)
+            Mouse.leftPressed = true;
+        Mouse.leftDown = true;
+    }
+}
+
+function handleMouseUp(evt) {
+    if (evt.which === 1)
+        Mouse.leftDown = false;
+}
+
+function Mouse_Singleton() {
+	this.position = {x: 816, y: 10};
+	this.leftDown = false;
+	this.leftPressed = false;
+    document.onmousemove = handleMouseMove;
+    document.onmousedown = handleMouseDown;
+    document.onmouseup = handleMouseUp;
+}
+
+Mouse_Singleton.prototype.reset = function () {
+    this.leftPressed = false;
 };
 
-Mouse.handleMouseMove = function (event) {
-	Mouse.position = {x: event.pageX - Canvas2D.canvas.offsetLeft, y: event.pageY - Canvas2D.canvas.offsetTop};
-}
-
-Mouse.handleMouseDown = function (event) {
-	if (event.which === 1) {
-		if (!Mouse.leftDown) {
-			Mouse.leftPressed = true;
-		}
-		Mouse.leftDown = true;
-	}
-}
-
-Mouse.handleMouseUp = function (event) {
-	if (event.which === 1) {
-		Mouse.leftDown = false;
-	}
-}
-
-Mouse.reset = function () {
-	Mouse.leftPressed = false;
-}
-
-Mouse.init = function () {
-	document.onmousemove = Mouse.handleMouseMove;
-	document.onmousedown = Mouse.handleMouseDown;
-	document.onmouseup = Mouse.handleMouseUp;
-}
+var Mouse = new Mouse_Singleton();
