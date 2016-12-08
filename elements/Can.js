@@ -1,9 +1,9 @@
 "use strict";
 
-function Can (position) {
+function Can (positionX) {
 	this.currentColor = sprites.canRed;
 	this.velocity = new Vector2();
-	this.position = new Vector2(position, -200);
+	this.position = new Vector2(positionX, -200);
 	this.origin = new Vector2();
 	this.reset();
 }
@@ -11,6 +11,10 @@ function Can (position) {
 Can.prototype.reset = function () {
 	this.moveToTop();
 	this.minVelocity = 30;
+};
+
+Can.prototype.moveToTop	= function () {
+	this.position.y = -200;
 };
 
 Can.prototype.randomVelocity = function () {
@@ -29,7 +33,7 @@ Can.prototype.randomColor = function () {
 	}
 };
 
-Can.prototype.update = function () {
+Can.prototype.update = function (delta) {
 	if (this.velocity.y === 0 && Math.random() < 0.01) {
 		this.velocity = this.randomVelocity();
 		this.currentColor = this.randomColor();
@@ -42,5 +46,9 @@ Can.prototype.update = function () {
 		this.moveToTop();
 	}
 
-	this.minVelocity = minVelocity + 0.01;
+	this.minVelocity = this.minVelocity + 0.01;
+};
+
+Can.prototype.draw = function () {
+	Canvas2D.drawImage(this.currentColor, this.position, 0, this.origin);
 };

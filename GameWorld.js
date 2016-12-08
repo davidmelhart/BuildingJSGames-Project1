@@ -4,9 +4,9 @@ function PainterGameWorld () {
     this.cannon = new Cannon();
     this.ball = new Ball();
 
-    this.can1 = new Can(450);
-    this.can2 = new Can(575);
-    this.can3 = new Can(700);
+    this.can1 = new Can(451);
+    this.can2 = new Can(580);
+    this.can3 = new Can(704);
 }
 
 PainterGameWorld.prototype.handleInput = function (delta) {
@@ -17,6 +17,9 @@ PainterGameWorld.prototype.handleInput = function (delta) {
 PainterGameWorld.prototype.update = function (delta) {
     this.ball.update(delta);
     this.cannon.update(delta);
+    this.can1.update(delta);
+    this.can2.update(delta);
+    this.can3.update(delta);
 };
 
 PainterGameWorld.prototype.draw = function () {
@@ -31,6 +34,9 @@ PainterGameWorld.prototype.draw = function () {
 PainterGameWorld.prototype.reset = function () {
     this.ball.reset();
     this.cannon.reset();
+    this.can1.reset();
+    this.can2.reset();
+    this.can3.reset();
 };
 
 PainterGameWorld.prototype.isOutsideWorld = function (position) {
