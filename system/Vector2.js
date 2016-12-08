@@ -5,6 +5,13 @@ function Vector2 (x, y) {
     this.y = typeof y !== 'undefined' ? y : 0;
 }
 
+Object.defineProperty(Vector2, 'zero',
+    {
+        get: function () {
+            return new Vector2();
+        }
+    });
+
 Vector2.prototype.addTo = function (v) {
     if (v.constructor == Vector2) {
         this.x += v.x;
@@ -85,7 +92,7 @@ Vector2.prototype.normalize = function () {
 };
 
 Vector2.prototype.copy = function () {
-    return new powerupjs.Vector2(this.x, this.y);
+    return new Vector2(this.x, this.y);
 };
 
 Vector2.prototype.equals = function (obj) {

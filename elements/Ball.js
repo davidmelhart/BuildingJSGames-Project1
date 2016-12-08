@@ -1,16 +1,44 @@
 "use strict";
 
 function Ball () {
-	this.position = { x:0, y:0 };
-	this.origin = { x:0, y:0 };
-	this.velocity = { x:0, y:0 };
+	this.position = new Vector2();
+	this.origin = new Vector2();
+	this.velocity = new Vector2();
 	this.currentColor = sprites.ballRed;
 	this.isShot = false;
 	this.speedMultiplier = 1.2;
 }
 
+Object.defineProperty(Ball.prototype, 'center', {
+		get: function () {
+			return new Vector2(this.currentColor.width/2, this.currentColor.height/2);
+		}
+	})
+
+Object.defineProperty(Ball.prototype, 'color',
+	{
+		get: function () {
+			if (this.currentColor === sprites.ballRed) {
+				return Color.red;
+			} else if (this.currentColor === sprites.ballGreen) {
+				return Color.green;
+			} else {
+				return Color.blue;
+			}
+		},
+		set: function (value) {
+			if (value === Color.red) {
+				this.currentColor = sprites.ballRed;
+			} else if (value === Color.green) {
+				this.currentColor = sprites.ballGreen;
+			} else if (value === Color.blue) {
+				this.currentColor = sprites.ballBlue;
+			}
+		}
+	});
+
 Ball.prototype.reset = function () {
-	this.position = { x:0, y:0 };
+	this.position = new Vector2();
 	this.isShot	= false;
 };
 
@@ -36,16 +64,9 @@ Ball.prototype.update = function (delta) {
 		this.position.x = this.position.x + this.velocity.x * delta;
 		this.position.y = this.position.y + this.velocity.y * delta;
 	} else {
-		if (Game.gameWorld.cannon.currentColor === sprites.cannonRed) {
-			this.currentColor = sprites.ballRed;
-		} else if (Game.gameWorld.cannon.currentColor === sprites.cannonGreen) {
-			this.currentColor = sprites.ballGreen;
-		} else {
-			this.currentColor = sprites.ballBlue;
-		}
-		this.position = Game.gameWorld.cannon.ballPosition();
-		this.position.x = this.position.x - this.currentColor.width / 2;
-		this.position.y = this.position.y - this.currentColor.height / 2;
+
+		this.color = Game.gameWorld.cannon.color;		
+		this.position = Game.gameWorld.cannon.ballPosition.subtractFrom(this.center);
 	}
 
 	if (Game.gameWorld.isOutsideWorld(this.position)) {
