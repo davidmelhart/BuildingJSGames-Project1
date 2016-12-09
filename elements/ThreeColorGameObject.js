@@ -1,28 +1,15 @@
 "use strict";
 
 function ThreeColorGameObject (spriteRed, spriteGreen, spriteBlue) {
-	this.origin = Vector2.zero;
-	this.position = Vector2.zero;
-	this.rotation = 0;
-	this.velocity = Vector2.zero;
+	GameObject.call(this);
+
 	this.currentColor = spriteRed;
 	this.colorRed = spriteRed;
 	this.colorGreen = spriteGreen;
 	this.colorBlue = spriteBlue;
-	this.visible = true
 }
 
-ThreeColorGameObject.prototype.draw = function () {
-	if (!this.visible) {
-		return;
-	} else {
-		Canvas2D.drawImage(this.currentColor, this.position, this.rotation, this.origin)
-	}
-};
-
-ThreeColorGameObject.prototype.update = function (delta) {
-	this.position.addTo(this.velocity.multiply(delta));
-};
+ThreeColorGameObject.prototype = Object.create(GameObject.prototype);
 
 Object.defineProperty(ThreeColorGameObject.prototype, 'color',
 	{
@@ -45,30 +32,3 @@ Object.defineProperty(ThreeColorGameObject.prototype, 'color',
 			}
 		}
 	});
-
-Object.defineProperty(ThreeColorGameObject.prototype, 'center', {
-		get: function () {
-			return new Vector2(this.currentColor.width/2, this.currentColor.height/2);
-		}
-	});
-
-Object.defineProperty(ThreeColorGameObject.prototype, "width",
-    {
-        get: function () {
-            return this.currentColor.width;
-        }
-    });
-
-Object.defineProperty(ThreeColorGameObject.prototype, "height",
-    {
-        get: function () {
-            return this.currentColor.height;
-        }
-    });
-
-Object.defineProperty(ThreeColorGameObject.prototype, "size",
-    {
-        get: function () {
-            return new Vector2(this.currentColor.width, this.currentColor.height);
-        }
-    });

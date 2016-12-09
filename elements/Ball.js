@@ -31,7 +31,7 @@ Ball.prototype.draw = function () {
 };
 
 Ball.prototype.update = function (delta) {
-	ThreeColorGameObject.prototype.update.call(this, delta);
+	GameObject.prototype.update.call(this, delta);
 	if (this.isShot) {
 		this.velocity.x *= 0.99;
 		this.velocity.y += 6;
