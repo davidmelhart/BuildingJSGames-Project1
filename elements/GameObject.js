@@ -26,21 +26,21 @@ Object.defineProperty(GameObject.prototype, 'center', {
 		}
 	});
 
-Object.defineProperty(GameObject.prototype, "width",
+Object.defineProperty(GameObject.prototype, 'width',
     {
         get: function () {
             return this.currentColor.width;
         }
     });
 
-Object.defineProperty(GameObject.prototype, "height",
+Object.defineProperty(GameObject.prototype, 'height',
     {
         get: function () {
             return this.currentColor.height;
         }
     });
 
-Object.defineProperty(GameObject.prototype, "size",
+Object.defineProperty(GameObject.prototype, 'size',
     {
         get: function () {
             return new Vector2(this.currentColor.width, this.currentColor.height);

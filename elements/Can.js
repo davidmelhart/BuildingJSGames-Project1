@@ -1,41 +1,14 @@
 "use strict";
 
 function Can (positionX, targetColor) {
-	this.currentColor = sprites.canRed;
+	ThreeColorGameObject.call(this, sprites.canRed, sprites.canGreen, sprites.canBlue);
+
 	this.targetColor = targetColor;
-	this.velocity = new Vector2();
 	this.position = new Vector2(positionX, -200);
-	this.origin = new Vector2();
 	this.reset();
 }
 
-Object.defineProperty(Can.prototype, 'center', {
-		get: function () {
-			return new Vector2(this.currentColor.width/2, this.currentColor.height/2);
-		}
-	});
-
-Object.defineProperty(Can.prototype, 'color',
-	{
-		get: function () {
-			if (this.currentColor === sprites.canRed) {
-				return Color.red;
-			} else if (this.currentColor === sprites.canGreen) {
-				return Color.green;
-			} else {
-				return Color.blue;
-			}
-		},
-		set: function (value) {
-			if (value === Color.red) {
-				this.currentColor = sprites.canRed;
-			} else if (value === Color.green) {
-				this.currentColor = sprites.canGreen;
-			} else if (value === Color.blue) {
-				this.currentColor = sprites.canBlue;
-			}
-		}
-	});
+Can.prototype = Object.create(ThreeColorGameObject.prototype);
 
 Can.prototype.reset = function () {
 	this.moveToTop();
@@ -48,7 +21,7 @@ Can.prototype.moveToTop	= function () {
 };
 
 Can.prototype.randomVelocity = function () {
-	return { x: 0, y: Math.random()*30 + this.minVelocity };
+	return this.velocity.addTo( new Vector2(0, Math.random()*30 + this.minVelocity ));
 };
 
 Can.prototype.randomColor = function () {
@@ -64,13 +37,15 @@ Can.prototype.randomColor = function () {
 };
 
 Can.prototype.update = function (delta) {
+	GameObject.prototype.update.call(this, delta);
+	this.minVelocity = this.minVelocity + 0.01;
+
+	this.rotation += 50
+
 	if (this.velocity.y === 0 && Math.random() < 0.01) {
 		this.velocity = this.randomVelocity();
 		this.currentColor = this.randomColor();
 	}
-
-	this.position.x = this.position.x + this.velocity.x * delta;
-	this.position.y = this.position.y + this.velocity.y * delta;
 
 	if (Game.gameWorld.isOutsideWorld(this.position)) {
 		if (this.color != this.targetColor) {
@@ -78,8 +53,6 @@ Can.prototype.update = function (delta) {
 		}
 		this.moveToTop();
 	}
-
-	this.minVelocity = this.minVelocity + 0.01;
 
 	var ball = Game.gameWorld.ball;
 	var distance = ball.position.add(ball.center).subtractFrom(this.position).subtractFrom(this.center);
