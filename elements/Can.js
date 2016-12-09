@@ -1,7 +1,8 @@
 "use strict";
 
-function Can (positionX) {
+function Can (positionX, targetColor) {
 	this.currentColor = sprites.canRed;
+	this.targetColor = targetColor;
 	this.velocity = new Vector2();
 	this.position = new Vector2(positionX, -200);
 	this.origin = new Vector2();
@@ -72,6 +73,9 @@ Can.prototype.update = function (delta) {
 	this.position.y = this.position.y + this.velocity.y * delta;
 
 	if (Game.gameWorld.isOutsideWorld(this.position)) {
+		if (this.color != this.targetColor) {
+			Game.gameWorld.lives -= 1;
+		}
 		this.moveToTop();
 	}
 

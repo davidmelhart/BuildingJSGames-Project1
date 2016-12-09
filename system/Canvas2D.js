@@ -11,6 +11,10 @@ Canvas2D_Singleton.prototype.init = function (canvas) {
 };
 
 Canvas2D_Singleton.prototype.drawImage = function (sprite, position, rotation, origin) {
+    position = typeof position !== 'undefined' ? position : Vector2.zero;
+    rotation = typeof rotation !== 'undefined' ? rotation : 0;
+    origin = typeof origin !== 'undefined' ? origin : Vector2.zero;
+
 	this.canvasContext.save();
 	this.canvasContext.translate(position.x, position.y);
 	this.canvasContext.rotate(rotation);
@@ -20,6 +24,13 @@ Canvas2D_Singleton.prototype.drawImage = function (sprite, position, rotation, o
 
 Canvas2D_Singleton.prototype.clear = function () {
 	this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
+Canvas2D_Singleton.prototype.fill = function(color) {
+	var canvas = this.canvas;
+	var ctx = this.canvasContext;
+	ctx.fillStyle = color;
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
 var Canvas2D = new Canvas2D_Singleton();

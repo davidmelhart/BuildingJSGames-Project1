@@ -1,18 +1,13 @@
 "use strict";
 
 function Cannon () {
+	ThreeColorGameObject.call(this, sprites.cannonRed, sprites.cannonGreen, sprites.cannonBlue);
+
 	this.position = new Vector2(72, 405);
-	this.origin = new Vector2(34, 34); //height/2
-	this.rotation = 0;
-	this.currentColor = sprites.cannonRed;
-	this.colorPosition = new Vector2(72, 405)
+	this.origin = new Vector2(34, 34);
 }
 
-Object.defineProperty(Cannon.prototype, 'center', {
-		get: function () {
-			return new Vector2(this.currentColor.width/2, this.currentColor.height/2);
-		}
-	});
+Cannon.prototype = Object.create(ThreeColorGameObject.prototype);
 
 Object.defineProperty(Cannon.prototype, 'ballPosition', 
 	{
@@ -23,35 +18,13 @@ Object.defineProperty(Cannon.prototype, 'ballPosition',
 		}
 	});
 
-Object.defineProperty(Cannon.prototype, 'color',
-	{
-		get: function () {
-			if (this.currentColor === sprites.cannonRed) {
-				return Color.red;
-			} else if (this.currentColor === sprites.cannonGreen) {
-				return Color.green;
-			} else {
-				return Color.blue;
-			}
-		},
-		set: function (value) {
-			if (value === Color.red) {
-				this.currentColor = sprites.cannonRed;
-			} else if (value === Color.green) {
-				this.currentColor = sprites.cannonGreen;
-			} else if (value === Color.blue) {
-				this.currentColor = sprites.cannonBlue;
-			}
-		}
-	});
-
 Cannon.prototype.handleInput = function (delta) {
 	if (Keyboard.keyDown === Keys.R) {
-		this.color = Color.red;
+		this.currentColor = this.colorRed;
 	} else if (Keyboard.keyDown === Keys.G) {
-		this.color = Color.green;
+		this.currentColor = this.colorGreen;
 	} else if (Keyboard.keyDown === Keys.B) {
-		this.color = Color.blue;
+		this.currentColor = this.colorBlue;
 	}
 
 	var opposite = Mouse.position.y - this.position.y;
@@ -60,12 +33,13 @@ Cannon.prototype.handleInput = function (delta) {
 };
 
 Cannon.prototype.draw = function () {
-	Canvas2D.drawImage(sprites.cannonBarrel, this.position, this.rotation, this.origin);
-	Canvas2D.drawImage(this.currentColor, this.colorPosition, 0, {x:16,y:15});
-};
-
-Cannon.prototype.update = function (delta) {
-	
+		if (!this.visible) {
+		return;
+	} else {
+		var colorPosition = this.position.subtract(this.size.divideBy(2));
+    	Canvas2D.drawImage(sprites.cannonBarrel, this.position, this.rotation, this.origin);
+    	Canvas2D.drawImage(this.currentColor, colorPosition);
+	}
 };
 
 Cannon.prototype.reset = function () {

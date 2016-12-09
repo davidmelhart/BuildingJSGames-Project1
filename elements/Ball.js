@@ -1,41 +1,14 @@
 "use strict";
 
 function Ball () {
-	this.position = new Vector2();
-	this.origin = new Vector2();
-	this.velocity = new Vector2();
-	this.currentColor = sprites.ballRed;
+	ThreeColorGameObject.call(this, sprites.ballRed, sprites.ballGreen, sprites.ballBlue);
+
 	this.isShot = false;
 	this.speedMultiplier = 1.2;
+	this.reset();
 }
 
-Object.defineProperty(Ball.prototype, 'center', {
-		get: function () {
-			return new Vector2(this.currentColor.width/2, this.currentColor.height/2);
-		}
-	})
-
-Object.defineProperty(Ball.prototype, 'color',
-	{
-		get: function () {
-			if (this.currentColor === sprites.ballRed) {
-				return Color.red;
-			} else if (this.currentColor === sprites.ballGreen) {
-				return Color.green;
-			} else {
-				return Color.blue;
-			}
-		},
-		set: function (value) {
-			if (value === Color.red) {
-				this.currentColor = sprites.ballRed;
-			} else if (value === Color.green) {
-				this.currentColor = sprites.ballGreen;
-			} else if (value === Color.blue) {
-				this.currentColor = sprites.ballBlue;
-			}
-		}
-	});
+Ball.prototype = Object.create(ThreeColorGameObject.prototype);
 
 Ball.prototype.reset = function () {
 	this.position = new Vector2();
@@ -58,13 +31,11 @@ Ball.prototype.draw = function () {
 };
 
 Ball.prototype.update = function (delta) {
+	ThreeColorGameObject.prototype.update.call(this, delta);
 	if (this.isShot) {
-		this.velocity.x = this.velocity.x * 0.99;
-		this.velocity.y = this.velocity.y + 6;
-		this.position.x = this.position.x + this.velocity.x * delta;
-		this.position.y = this.position.y + this.velocity.y * delta;
+		this.velocity.x *= 0.99;
+		this.velocity.y += 6;
 	} else {
-
 		this.color = Game.gameWorld.cannon.color;		
 		this.position = Game.gameWorld.cannon.ballPosition.subtractFrom(this.center);
 	}
