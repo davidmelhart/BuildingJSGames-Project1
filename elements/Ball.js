@@ -18,20 +18,22 @@ Ball.prototype.reset = function () {
 Ball.prototype.handleInput = function () {
 	if (Mouse.leftPressed && !this.isShot) {
 		this.isShot = true;
-        this.velocity.x = (Mouse.position.x - this.position.x) * this.speedMultiplier;
-        this.velocity.y = (Mouse.position.y - this.position.y) * this.speedMultiplier;
+		this.velocity = Mouse.position.subtract(this.position).multiplyWith(this.speedMultiplier);
+        sounds.shootPaint.play();
 	}
 };
 
 Ball.prototype.draw = function () {
 	if (!this.isShot) {
 		return;
+	} else {
+		GameObject.prototype.draw.call(this)
 	}
-	Canvas2D.drawImage(this.currentColor, this.position, this.rotation, this.origin);
 };
 
 Ball.prototype.update = function (delta) {
 	GameObject.prototype.update.call(this, delta);
+	
 	if (this.isShot) {
 		this.velocity.x *= 0.99;
 		this.velocity.y += 6;

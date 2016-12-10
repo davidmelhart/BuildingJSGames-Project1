@@ -1,7 +1,7 @@
 "use strict";
 
 function handleMouseMove(evt) {
-    Mouse.position = {x: event.pageX - Canvas2D.canvas.offsetLeft, y: event.pageY - Canvas2D.canvas.offsetTop};
+    Mouse.position = new Vector2( event.pageX - Canvas2D._canvas.offsetLeft, event.pageY - Canvas2D._canvas.offsetTop );
 }
 
 function handleMouseDown(evt) {
@@ -18,7 +18,7 @@ function handleMouseUp(evt) {
 }
 
 function Mouse_Singleton() {
-	this.position = new Vector2(816, 10);
+	this.position = new Vector2(400, 240);
 	this.leftDown = false;
 	this.leftPressed = false;
     document.onmousemove = handleMouseMove;

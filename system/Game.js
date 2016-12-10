@@ -24,7 +24,7 @@ Game_Singleton.prototype.startup = function (canvas, x, y) {
 };
 
 Game_Singleton.prototype.init = function () {
-	this.gameWorld = new PainterGameWorld();
+	
 };
 
 Game_Singleton.prototype.assetLoader = function () {

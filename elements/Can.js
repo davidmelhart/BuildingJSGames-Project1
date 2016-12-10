@@ -40,7 +40,7 @@ Can.prototype.update = function (delta) {
 	GameObject.prototype.update.call(this, delta);
 	this.minVelocity = this.minVelocity + 0.01;
 
-	this.rotation += 50
+	this.rotation = Math.sin(this.position.y / 20) * 0.1;
 
 	if (this.velocity.y === 0 && Math.random() < 0.01) {
 		this.velocity = this.randomVelocity();
@@ -48,7 +48,10 @@ Can.prototype.update = function (delta) {
 	}
 
 	if (Game.gameWorld.isOutsideWorld(this.position)) {
-		if (this.color != this.targetColor) {
+		if (this.color === this.targetColor) {
+			Game.gameWorld.score += 10;
+			sounds.collectPoints.play();			
+		} else {
 			Game.gameWorld.lives -= 1;
 		}
 		this.moveToTop();
@@ -61,8 +64,4 @@ Can.prototype.update = function (delta) {
 		this.color = ball.color;
 		ball.reset();
 	}
-};
-
-Can.prototype.draw = function () {
-	Canvas2D.drawImage(this.currentColor, this.position, 0, this.origin);
 };

@@ -9,6 +9,7 @@ function PainterGameWorld () {
     this.can3 = new Can(704, Color.blue);
 
     this.lives = 5;
+    this.score = 0;
 }
 
 PainterGameWorld.prototype.handleInput = function (delta) {
@@ -18,6 +19,8 @@ PainterGameWorld.prototype.handleInput = function (delta) {
     } else {
         if (Mouse.leftPressed) {
             this.reset();
+            sounds.music.volume = 0.3;
+            sounds.music.play();
         }
     }
 
@@ -42,14 +45,21 @@ PainterGameWorld.prototype.draw = function () {
     this.can1.draw();
     this.can2.draw();
     this.can3.draw();
+    if (this.lives > 0) {
+        Canvas2D.drawImage(sprites.crosshair, Mouse.position, 0, new Vector2(sprites.crosshair.width, sprites.crosshair.height).divideBy(2))
+    }
 
     for (var i = 0; i < this.lives; i++) {
         Canvas2D.drawImage(sprites.life, new Vector2(i * sprites.life.width + 15, 60));
     }
 
+    Canvas2D.drawImage(sprites.score, new Vector2(12,12));
+    Canvas2D.drawText("Score: " + this.score, new Vector2(22,21))
+
     if (this.lives <= 0) {
         Canvas2D.fill("rgba(0, 0, 0, 0.8)")
         Canvas2D.drawImage(sprites.gameover, new Vector2(Game.size.x - sprites.gameover.width, Game.size.y - sprites.gameover.height).divideBy(2))
+        sounds.music.volume = 0;
     }
 };
 
